@@ -14,6 +14,8 @@ public interface CommunicationServices {
 
 	public default String sendMsg(int id, int sender, int receiver, String type, List<?> args){
 		return this.sendMsg(id,sender,receiver,type,args,GlobalParameters.getBaseTTL(),3);
-}
+	}
+	
+	public void completeDoPong(int address);
 	
 }

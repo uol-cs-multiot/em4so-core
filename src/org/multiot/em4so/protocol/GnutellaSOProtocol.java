@@ -23,7 +23,6 @@ import org.multiot.em4so.utils.TimeUtils;
 
 public class GnutellaSOProtocol extends SOProtocol {
 	
-
 public GnutellaSOProtocol(SObject sobject, CommunicationServices network){
 	this.sobject = sobject;
 //	recordSent = new ArrayList<String>();
@@ -33,7 +32,6 @@ public GnutellaSOProtocol(SObject sobject, CommunicationServices network){
 	pendingMsgExecuted = new HashMap<String,Message>();
 	this.network = network;
 }
-
 
 public synchronized String query(String role, Collection<String> excluded) {
 	List<Object> args = new ArrayList<Object>();
@@ -219,6 +217,7 @@ public synchronized void doPong(Message msg){
 			
 			//TODO Review: It shouldn't be necessary as this is for simulated connection
 			//network.addConnection(msg.getArgs().get(0)); // msg.args[0] : responder
+			network.completeDoPong(((Integer)msg.getArgs().get(0)).intValue());
 		}
 	}
 	

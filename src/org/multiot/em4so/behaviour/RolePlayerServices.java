@@ -20,7 +20,11 @@ import org.multiot.em4so.utils.EntityUtils;
 import org.multiot.em4so.utils.TimeUtils;;
 
 public class RolePlayerServices {
-	private BehaviourImplementator implementator;
+
+	/**
+	 * Object to make calls to abstract method implementations when required 
+	 */
+	protected static BehaviourImplementator implementator;
 	
 	private static final int limitTimePlayerStarted = 30; // max time allowed to
 															// wait for a task
@@ -32,6 +36,9 @@ public class RolePlayerServices {
 															// task started
 															// increased to 30 to give more realistic tolerance considering low resource devices 
 
+	
+	
+	
 	public static synchronized void updateKnownPlayersRole(SObject sobject, String role, List<Player> players) {
 		boolean toAdd = false;
 		Player player = null, receivedPlayer =null, preExistingPlayer = null;
@@ -94,7 +101,7 @@ public class RolePlayerServices {
 				
 				//TODO Review: It shouldn't be necessary as this is for simulated connection
 				//sobject.getSimSobject().getNetwork().addConnection(player.getId());
-				
+				implementator.completeUpdateKnownPlayersRole(sobject,player.getId());
 				
 				
 				//Add player as peer, if peer queue is not in its max capacity
@@ -115,6 +122,14 @@ public class RolePlayerServices {
 		
 	}
 	
+	public static BehaviourImplementator getImplementator() {
+		return implementator;
+	}
+
+	public static void setImplementator(BehaviourImplementator implementator) {
+		RolePlayerServices.implementator = implementator;
+	}
+
 	public static int getPlayersPerRole(Map<String,Map<String,Player>> knownPlayers, String role){
 		return knownPlayers.containsKey(role)?knownPlayers.get(role).keySet().size():0;
 	}
@@ -181,6 +196,7 @@ public class RolePlayerServices {
 		}
 		//TODO: Review
 		//implementator.completeRemoveFromKnownPlayersPlayer(sobject,address);
+		implementator.completeRemoveFromKnownPlayersPlayer(sobject,address);
 		sobject.setKnownPlayers(updatedKnownPlayers);
 	}
 
